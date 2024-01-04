@@ -77,6 +77,37 @@ class CustomerTest extends TestCase
             );
     }
 
+    public function test_store_when_input_name_is_not_avaialable()
+    {
+        $customerArray = [
+            'email'=>time().'test@mail.com',
+            'telephone_number'=>'0123456',
+            'address'=>'test address'
+        ];
+
+        return $this->post('/api/customers', $customerArray,['accept'=>'application/json'])
+            ->assertStatus(422)
+            ->assertJsonStructure(
+                ['message', 'errors']
+            );
+    }
+
+    public function test_store_when_input_name_is_small()
+    {
+        $customerArray = [
+            'name'=>'s1',
+            'email'=>time().'test@mail.com',
+            'telephone_number'=>'01234456',
+            'address'=>'test address'
+        ];
+
+        return $this->post('/api/customers', $customerArray,['accept'=>'application/json'])
+            ->assertStatus(422)
+            ->assertJsonStructure(
+                ['message', 'errors']
+            );
+    }
+
     /**
      * A feature test to update customer
      */
