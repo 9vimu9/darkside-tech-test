@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Customer;
 
+use App\Exceptions\CustomerCannotBeRemovedException;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use app\Repositories\Interfaces\CustomerRepositoryInterface;
@@ -24,7 +25,10 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
 
     public function destroyById(int $id): bool
     {
-        return Customer::findOrFail($id)->delete();
+        if (!Customer::findOrFail($id)->delete()) {
+            throw new CustomerCannotBeRemovedException();
+        }
+        return true;
     }
 
     public function updateById(int $id, array $inputs): JsonResource
