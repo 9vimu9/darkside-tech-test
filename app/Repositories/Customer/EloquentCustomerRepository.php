@@ -10,7 +10,6 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class EloquentCustomerRepository implements CustomerRepositoryInterface
 {
-
     public function all(): ResourceCollection
     {
         return CustomerResource::collection(Customer::all());
@@ -32,6 +31,7 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
     {
         $customer = Customer::findOrFail($id);
         $customer->update($inputs);
+
         return new CustomerResource($customer);
     }
 

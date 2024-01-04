@@ -25,12 +25,12 @@ class CustomerController extends Controller
 
     public function update(CustomerRepositoryInterface $customerRepository, CustomerUpdateRequest $request, int $id)
     {
-      return $customerRepository->updateById($id,$request->all());
+        return $customerRepository->updateById($id, $request->all());
     }
 
     public function destroy(CustomerRepositoryInterface $customerRepository, int $id)
     {
-        if($customerRepository->destroyById($id)){
+        if ($customerRepository->destroyById($id)) {
             return [];
         }
         throw new \Exception();
