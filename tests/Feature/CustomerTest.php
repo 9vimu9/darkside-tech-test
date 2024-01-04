@@ -82,10 +82,10 @@ class CustomerTest extends TestCase
         $customerArray = [
             'email'=>time().'test@mail.com',
             'telephone_number'=>'0123456',
-            'address'=>'test address'
+            'address'=>'test address',
         ];
 
-        return $this->post('/api/customers', $customerArray,['accept'=>'application/json'])
+        return $this->post('/api/customers', $customerArray, ['accept'=>'application/json'])
             ->assertStatus(422)
             ->assertJsonStructure(
                 ['message', 'errors']
@@ -98,10 +98,10 @@ class CustomerTest extends TestCase
             'name'=>'s1',
             'email'=>time().'test@mail.com',
             'telephone_number'=>'01234456',
-            'address'=>'test address'
+            'address'=>'test address',
         ];
 
-        return $this->post('/api/customers', $customerArray,['accept'=>'application/json'])
+        return $this->post('/api/customers', $customerArray, ['accept'=>'application/json'])
             ->assertStatus(422)
             ->assertJsonStructure(
                 ['message', 'errors']
