@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource(
     'customers',
     App\Http\Controllers\CustomerController::class, [
-    'except' => ['create', 'edit']]);
+        'except' => ['create', 'edit']]);
