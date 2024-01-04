@@ -29,7 +29,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return new CustomerResource(Customer::create($request->all()));
     }
 
     /**
