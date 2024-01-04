@@ -16,7 +16,7 @@ class CustomerTest extends TestCase
     {
         $customer = Customer::factory()->create();
 
-        return $this->get('/api/customers/'.$customer->id)
+        return $this->get('/api/customers/' . $customer->id)
             ->assertStatus(200)
             ->assertJsonStructure(
                 [
@@ -51,5 +51,19 @@ class CustomerTest extends TestCase
                     ],
                     ]]
             );
+    }
+
+    /**
+     * A feature test to save customer
+     */
+    public function test_store_customer()
+    {
+        $customer = Customer::factory()->make();
+        $customerArray = $customer->toArray();
+        $customerArray['id'] = Customer::latest()->first()->id + 1;
+
+        return $this->post('/api/customers', $customerArray)
+            ->assertStatus(201)
+            ->assertExactJson(['data' => $customerArray]);
     }
 }
