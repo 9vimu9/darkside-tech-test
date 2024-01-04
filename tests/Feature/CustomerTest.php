@@ -9,6 +9,7 @@ use Tests\TestCase;
 class CustomerTest extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * A feature test to get customer data based on customer ID
      */
@@ -74,7 +75,6 @@ class CustomerTest extends TestCase
                     ],
                 ]
             );
-
     }
 
     /**
@@ -103,7 +103,7 @@ class CustomerTest extends TestCase
     {
         $customer = Customer::factory()->create();
 
-        return $this->delete('/api/customers/' . $customer->id)
+        return $this->delete('/api/customers/'.$customer->id)
             ->assertStatus(200)
             ->assertExactJson([]);
     }
