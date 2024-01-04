@@ -25,9 +25,10 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
 
     public function destroyById(int $id): bool
     {
-        if (!Customer::findOrFail($id)->delete()) {
+        if (! Customer::findOrFail($id)->delete()) {
             throw new CustomerCannotBeRemovedException();
         }
+
         return true;
     }
 
