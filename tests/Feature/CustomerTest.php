@@ -85,4 +85,16 @@ class CustomerTest extends TestCase
             ->assertStatus(200)
             ->assertExactJson(['data' => $customerArray]);
     }
+
+    /**
+     * A feature test to remove customer based on customer ID
+     */
+    public function test_delete_customer_by_id()
+    {
+        $customer = Customer::factory()->create();
+
+        return $this->delete('/api/customers/' . $customer->id)
+            ->assertStatus(200)
+            ->assertExactJson([]);
+    }
 }
