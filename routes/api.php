@@ -18,4 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('customers', App\Http\Controllers\CustomerController::class);
+Route::resource(
+    'customers',
+    App\Http\Controllers\CustomerController::class, [
+    'except' => ['create', 'edit']]);
