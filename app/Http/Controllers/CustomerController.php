@@ -4,37 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
-use App\Http\Resources\CustomerResource;
-use App\Models\Customer;
+use App\Repositories\Interfaces\CustomerRepositoryInterface;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(CustomerRepositoryInterface $customerRepository)
     {
-        return CustomerResource::collection(Customer::all());
+        return $customerRepository->all();
     }
 
-    public function store(CustomerStoreRequest $request)
+    public function store(CustomerRepositoryInterface $customerRepository, CustomerStoreRequest $request)
     {
-        return new CustomerResource(Customer::create($request->all()));
+        return $customerRepository->create($request->all());
     }
 
-    public function show(Customer $customer)
+    public function show(CustomerRepositoryInterface $customerRepository, int $id)
     {
-        return new CustomerResource($customer);
+        return $customerRepository->findById($id);
     }
 
-    public function update(CustomerUpdateRequest $request, Customer $customer)
+    public function update(CustomerRepositoryInterface $customerRepository, CustomerUpdateRequest $request, int $id)
     {
-        $customer->update($request->all());
-
-        return new CustomerResource($customer);
+      return $customerRepository->updateById($id,$request->all());
     }
 
-    public function destroy(Customer $customer)
+    public function destroy(CustomerRepositoryInterface $customerRepository, int $id)
     {
-        $customer->delete();
-
-        return [];
+        if($customerRepository->destroyById($id)){
+            return [];
+        }
+        throw new \Exception();
     }
 }
