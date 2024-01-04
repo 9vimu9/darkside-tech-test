@@ -66,4 +66,23 @@ class CustomerTest extends TestCase
             ->assertStatus(201)
             ->assertExactJson(['data' => $customerArray]);
     }
+
+    /**
+     * A feature test to update customer
+     */
+    public function test_update_customer()
+    {
+        $customer = Customer::factory()->create();
+        $customerArray = [
+            'id' => $customer->id,
+            'name' => "TEST NAME",
+            'email' => time().'test@mail.com',
+            'address' => 'test address',
+            'telephone_number' => '123456',
+        ];
+
+        return $this->put('/api/customers/' . $customer->id, $customerArray)
+            ->assertStatus(200)
+            ->assertExactJson(['data' => $customerArray]);
+    }
 }
