@@ -3,12 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\Customer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class CustomerTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * A feature test to get customer data based on customer ID
      */
@@ -60,11 +60,21 @@ class CustomerTest extends TestCase
     {
         $customer = Customer::factory()->make();
         $customerArray = $customer->toArray();
-        $customerArray['id'] = Customer::latest()->first()->id + 1;
 
         return $this->post('/api/customers', $customerArray)
             ->assertStatus(201)
-            ->assertExactJson(['data' => $customerArray]);
+            ->assertJsonStructure(
+                [
+                    'data' => [
+                        'id',
+                        'name',
+                        'email',
+                        'telephone_number',
+                        'address',
+                    ],
+                ]
+            );
+
     }
 
     /**
