@@ -116,10 +116,10 @@ class CustomerTest extends TestCase
         $customer = Customer::factory()->create();
         $customerArray = [
             'id' => $customer->id,
-            'name' => 'TEST NAME',
+            'name' => 'TEST NAME FIELD',
             'email' => time().'test@mail.com',
             'address' => 'test address',
-            'telephone_number' => '123456',
+            'telephone_number' => '0123456',
         ];
 
         return $this->put('/api/customers/'.$customer->id, $customerArray)
