@@ -16,7 +16,7 @@ class CustomerTest extends TestCase
     {
         $customer = Customer::factory()->create();
 
-        return $this->get('/api/customers/' . $customer->id)
+        return $this->get('/api/customers/'.$customer->id)
             ->assertStatus(200)
             ->assertJsonStructure(
                 [
