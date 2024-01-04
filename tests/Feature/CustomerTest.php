@@ -31,5 +31,25 @@ class CustomerTest extends TestCase
             );
     }
 
+    /**
+     * A feature test to get all customers
+     */
+    public function test_get_all_customers()
+    {
+        Customer::factory()->times(4)->create();
 
+        return $this->get('/api/customers')
+            ->assertStatus(200)
+            ->assertJsonStructure(
+                [
+                    'data' => ['*' => [
+                        'id',
+                        'name',
+                        'email',
+                        'telephone_number',
+                        'address',
+                    ],
+                    ]]
+            );
+    }
 }
