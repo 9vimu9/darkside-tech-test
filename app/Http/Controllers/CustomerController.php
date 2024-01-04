@@ -13,7 +13,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return CustomerResource::collection([]);
+        return CustomerResource::collection(Customer::all());
     }
 
     /**
