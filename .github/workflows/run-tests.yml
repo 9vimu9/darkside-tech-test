@@ -24,8 +24,9 @@ jobs:
 
       - name: Prepare Laravel Application
         run: |
+          cp .env.testing .env
           php artisan config:cache --env=testing
-          php artisan migrate
+          php artisan migrate --force
 
       - name: Run tests
         run: php artisan test
