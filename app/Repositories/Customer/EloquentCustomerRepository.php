@@ -19,6 +19,7 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
         foreach ($customers as $customer) {
             $customerArray[] = $this->toCustomerDto($customer);
         }
+
         return $customerArray;
     }
 
@@ -30,7 +31,6 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
             $customer->telephone_number,
             $customer->address
         );
-
     }
 
     public function create(array $inputs): CustomerDto
@@ -45,7 +45,7 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
 
     public function destroyById(int $id): bool
     {
-        if (!Customer::findOrFail($id)->delete()) {
+        if (! Customer::findOrFail($id)->delete()) {
             throw new CustomerCannotBeRemovedException();
         }
 
@@ -56,6 +56,7 @@ class EloquentCustomerRepository implements CustomerRepositoryInterface
     {
         $customer = Customer::findOrFail($id);
         $customer->update($inputs);
+
         return $this->toCustomerDto($customer);
     }
 }

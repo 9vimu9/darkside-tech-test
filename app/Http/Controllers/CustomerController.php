@@ -21,6 +21,7 @@ class CustomerController extends Controller
     public function store(CustomerRepositoryInterface $customerRepository, CustomerStoreRequest $request): JsonResponse
     {
         $customerResource = new CustomerResource($customerRepository->create($request->all()));
+
         return $customerResource->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
@@ -38,9 +39,11 @@ class CustomerController extends Controller
     {
         try {
             $customerRepository->destroyById($id);
+
             return \response()->noContent();
         } catch (CustomerCannotBeRemovedException $exception) {
-            Log::debug("Customer cannot be removed", ['customer_id' => $id]);
+            Log::debug('Customer cannot be removed', ['customer_id' => $id]);
+
             return \response()->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
