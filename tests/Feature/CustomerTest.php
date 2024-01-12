@@ -135,7 +135,7 @@ class CustomerTest extends TestCase
         $customer = Customer::factory()->create();
 
         return $this->delete('/api/customers/'.$customer->id)
-            ->assertStatus(200)
-            ->assertExactJson([]);
+            ->assertStatus(\Illuminate\Http\Response::HTTP_NO_CONTENT)
+            ->assertNoContent();
     }
 }

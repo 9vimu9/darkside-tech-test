@@ -2,37 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CustomerCannotBeRemovedException;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Http\Resources\CustomerResource;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends Controller
 {
     public function index(CustomerRepositoryInterface $customerRepository)
     {
-        return $customerRepository->all();
+        return CustomerResource::collection($customerRepository->all());
     }
 
-    public function store(CustomerRepositoryInterface $customerRepository, CustomerStoreRequest $request)
+    public function store(CustomerRepositoryInterface $customerRepository, CustomerStoreRequest $request): JsonResponse
     {
-        return $customerRepository->create($request->all());
+        $customerResource = new CustomerResource($customerRepository->create($request->all()));
+        return $customerResource->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(CustomerRepositoryInterface $customerRepository, int $id)
+    public function show(CustomerRepositoryInterface $customerRepository, int $id): CustomerResource
     {
-        return $customerRepository->findById($id);
+        return new CustomerResource($customerRepository->findById($id));
     }
 
-    public function update(CustomerRepositoryInterface $customerRepository, CustomerUpdateRequest $request, int $id)
+    public function update(CustomerRepositoryInterface $customerRepository, CustomerUpdateRequest $request, int $id): CustomerResource
     {
-        return $customerRepository->updateById($id, $request->all());
+        return new CustomerResource($customerRepository->updateById($id, $request->all()));
     }
 
     public function destroy(CustomerRepositoryInterface $customerRepository, int $id)
     {
-        if ($customerRepository->destroyById($id)) {
-            return [];
+        try {
+            $customerRepository->destroyById($id);
+            return \response()->noContent();
+        } catch (CustomerCannotBeRemovedException $exception) {
+            Log::debug("Customer cannot be removed", ['customer_id' => $id]);
+            return \response()->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        throw new \Exception();
     }
 }
